@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DevOps Job Radar — Germany</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #0a0d12;
+    --surface:  #111620;
+    --card:     #161d2a;
+    --border:   #1f2d42;
+    --accent:   #00d4ff;
+    --accent2:  #00ff9d;
+    --accent3:  #ff6b35;
+    --warn:     #ffd166;
+    --text:     #e2e8f0;
+    --muted:    #64748b;
+    --mono:     'Space Mono', monospace;
+    --sans:     'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── GRID BG ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,13,18,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent2); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
+
+  .header-meta {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .header-meta span { color: var(--accent2); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    z-index: 1;
+    padding: 5rem 2rem 3rem;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.1s ease forwards;
+  }
+
+  .hero h1 {
+    font-family: var(--mono);
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.2s ease forwards;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+    text-shadow: 0 0 40px rgba(0,212,255,0.4);
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 500px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.3s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(16px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin: 0 auto 3rem;
+    max-width: 700px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.4s ease forwards;
+  }
+
+  .stat-item {
+    flex: 1;
+    padding: 1rem;
+    text-align: center;
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .stat-item:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: var(--mono);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.68rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.3rem;
+  }
+
+  /* ── CONTROLS ── */
+  .controls {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0 2rem 2rem;
+    max-width: 1300px;
+    margin: 0 auto;
+    align-items: center;
+  }
+
+  .search-wrap {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    pointer-events: none;
+  }
+
+  input[type="search"] {
+    width: 100%;
+    padding: 0.65rem 1rem 0.65rem 2.6rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input[type="search"]:focus { border-color: var(--accent); }
+  input[type="search"]::placeholder { color: var(--muted); }
+
+  .filter-btn {
+    padding: 0.65rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0,212,255,0.06);
+  }
+  .filter-btn.active.green  { border-color: var(--accent2); color: var(--accent2); background: rgba(0,255,157,0.06); }
+  .filter-btn.active.orange { border-color: var(--accent3); color: var(--accent3); background: rgba(255,107,53,0.06); }
+
+  .sort-select {
+    padding: 0.65rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    outline: none;
+    cursor: pointer;
+  }
+  .sort-select option { background: var(--card); }
+
+  /* ── GRID ── */
+  .jobs-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 1.25rem;
+    padding: 0 2rem 4rem;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  /* ── JOB CARD ── */
+  .job-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    animation: cardIn 0.4s ease both;
+  }
+  @keyframes cardIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+  .job-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0,212,255,0.35);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,212,255,0.1);
+  }
+
+  .card-top {
+    padding: 1.25rem 1.25rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .score-ring {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    position: relative;
+  }
+  .score-ring svg { transform: rotate(-90deg); }
+  .score-ring .track { fill: none; stroke: var(--border); stroke-width: 4; }
+  .score-ring .fill  { fill: none; stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset 1s ease; }
+  .score-ring .score-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .card-title-wrap { flex: 1; }
+
+  .card-company {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.3rem;
+  }
+
+  .card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .card-body { padding: 1rem 1.25rem; }
+
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 5px;
+    font-size: 0.68rem;
+    font-family: var(--mono);
+    border: 1px solid;
+  }
+  .tag-loc   { color: var(--muted);   border-color: var(--border);  background: rgba(255,255,255,0.02); }
+  .tag-remote-full   { color: var(--accent2); border-color: rgba(0,255,157,0.25); background: rgba(0,255,157,0.06); }
+  .tag-remote-hybrid { color: var(--warn);    border-color: rgba(255,209,102,0.25); background: rgba(255,209,102,0.06); }
+  .tag-date  { color: var(--muted);   border-color: var(--border);  background: rgba(255,255,255,0.02); }
+
+  .card-summary {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .skills-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .skill-pill {
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    background: rgba(0,212,255,0.07);
+    color: var(--accent);
+    border: 1px solid rgba(0,212,255,0.15);
+  }
+
+  .card-footer {
+    border-top: 1px solid var(--border);
+    padding: 0.85rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .apply-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    background: transparent;
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-decoration: none;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+  .apply-btn:hover {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  .match-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--muted);
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 5rem 2rem;
+    font-family: var(--mono);
+    color: var(--muted);
+  }
+  .empty h3 { font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--text); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,13,18,0.85);
+    backdrop-filter: blur(8px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    max-width: 680px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    transform: translateY(20px);
+    transition: transform 0.25s;
+  }
+  .modal-overlay.open .modal { transform: translateY(0); }
+
+  .modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    background: var(--card);
+    border-radius: 16px 16px 0 0;
+  }
+
+  .modal-close {
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .modal-close:hover { border-color: var(--accent3); color: var(--accent3); }
+
+  .modal-body { padding: 1.5rem; }
+
+  .modal-section { margin-bottom: 1.5rem; }
+  .modal-section h4 {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.6rem;
+  }
+  .modal-section p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--surface);
+    border: 1px solid var(--accent2);
+    color: var(--accent2);
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    z-index: 300;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* ── LOADING ── */
+  #loading {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    transition: opacity 0.5s;
+  }
+  #loading.hidden { opacity: 0; pointer-events: none; }
+
+  .loader-text {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  .loader-bar {
+    width: 200px;
+    height: 2px;
+    background: var(--border);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+  .loader-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    animation: loading 1.4s ease-in-out infinite;
+  }
+  @keyframes loading { 0%{transform:translateX(-100%)} 100%{transform:translateX(200%)} }
+
+  .last-updated {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--muted);
+    text-align: center;
+    padding: 0 2rem 2rem;
+  }
+  .last-updated span { color: var(--accent2); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .stats-bar { flex-wrap: wrap; }
+    .stat-item { flex: 1 1 45%; }
+    .hero h1 { font-size: 1.8rem; }
+    header { padding: 0 1rem; }
+    .header-meta { display: none; }
+    .controls, .jobs-grid { padding-left: 1rem; padding-right: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Loading screen -->
+<div id="loading">
+  <div class="logo"><div class="logo-dot"></div> RADAR // INITIALIZING</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+  <div class="loader-text">scanning job market...</div>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    <span>DEVOPS_RADAR.sh</span>
+  </div>
+  <div class="header-meta">
+    <span>🇩🇪 Germany</span>
+    <span>UPDATED: <span id="hdr-updated">—</span></span>
+    <span id="hdr-count">— ROLES</span>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-eyebrow">// job intelligence dashboard</div>
+  <h1>Your <em>DevOps</em> Job<br>Radar</h1>
+  <p class="hero-sub">Auto-scored against your Kubernetes, Terraform, ArgoCD & Azure skills. Updated daily. Germany remote/hybrid only.</p>
+
+  <div class="stats-bar" id="stats-bar">
+    <div class="stat-item"><span class="stat-num" id="st-total">—</span><div class="stat-label">Total Matches</div></div>
+    <div class="stat-item"><span class="stat-num" id="st-high" style="color:var(--accent2)">—</span><div class="stat-label">High Match ≥75</div></div>
+    <div class="stat-item"><span class="stat-num" id="st-remote">—</span><div class="stat-label">Fully Remote</div></div>
+    <div class="stat-item"><span class="stat-num" id="st-avg">—</span><div class="stat-label">Avg Score</div></div>
+  </div>
+</section>
+
+<!-- Controls -->
+<div class="controls">
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input type="search" id="search" placeholder="Search title, company, skills..." />
+  </div>
+  <button class="filter-btn active" data-filter="all">ALL</button>
+  <button class="filter-btn green" data-filter="high">≥75% MATCH</button>
+  <button class="filter-btn" data-filter="fully">FULLY REMOTE</button>
+  <button class="filter-btn" data-filter="hybrid">HYBRID</button>
+  <select class="sort-select" id="sort">
+    <option value="score">Sort: Best Match</option>
+    <option value="date">Sort: Newest</option>
+    <option value="company">Sort: Company A-Z</option>
+  </select>
+</div>
+
+<!-- Jobs Grid -->
+<main class="jobs-grid" id="jobs-grid"></main>
+
+<div class="last-updated" id="last-updated"></div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div>
+        <div class="card-company" id="m-company"></div>
+        <div class="card-title" style="font-size:1.1rem" id="m-title"></div>
+      </div>
+      <button class="modal-close" onclick="document.getElementById('modal-overlay').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="card-meta" id="m-meta"></div>
+      <div class="modal-section">
+        <h4>// role summary</h4>
+        <p id="m-summary"></p>
+      </div>
+      <div class="modal-section">
+        <h4>// matched skills</h4>
+        <div class="skills-row" id="m-skills"></div>
+      </div>
+      <div class="modal-section">
+        <h4>// match analysis</h4>
+        <p id="m-analysis"></p>
+      </div>
+      <a id="m-apply" href="#" target="_blank" class="apply-btn" style="width:100%;justify-content:center;padding:0.75rem">
+        → Open Career Page
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Sample / fallback data (replaced by jobs.json from Python script) ──────
+const SAMPLE_JOBS = [
+  {
+    title: "Senior DevOps Engineer (Remote)",
+    company: "Zalando SE",
+    location: "Berlin, Germany",
+    remote_type: "Fully Remote",
+    date_posted: new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
+    score: 88,
+    matched_skills: ["Kubernetes","Terraform","ArgoCD","Azure","GitHub Actions","Prometheus","Grafana","Docker","Helm"],
+    summary: "Join Zalando platform team to own Kubernetes-based infrastructure at scale. Drive CI/CD modernization with ArgoCD and GitOps patterns. Collaborate with 80+ engineering teams across Europe.",
+    career_url: "https://jobs.zalando.com/en/jobs"
+  },
+  {
+    title: "Platform Engineer — Cloud Infrastructure",
+    company: "N26 GmbH",
+    location: "Berlin / Remote",
+    remote_type: "Hybrid / Remote",
+    date_posted: new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
+    score: 82,
+    matched_skills: ["Kubernetes","AWS","Terraform","GitHub Actions","Docker","Prometheus","Python"],
+    summary: "N26 is hiring a Platform Engineer to lead EKS cluster operations and IaC standardization using Terraform modules. Security-first mindset required — integrate Trivy and SAST tooling into pipelines.",
+    career_url: "https://n26.com/en-de/careers"
+  },
+  {
+    title: "Site Reliability Engineer (SRE) — Kubernetes",
+    company: "Personio",
+    location: "Munich, Germany",
+    remote_type: "Hybrid / Remote",
+    date_posted: new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
+    score: 79,
+    matched_skills: ["Kubernetes","GitOps","ArgoCD","Grafana","Prometheus","Helm","Bash"],
+    summary: "Own reliability and observability for Personio HR platform serving 10,000+ customers. Build runbooks, SLOs, and alerting with Prometheus/Grafana. Drive incident response and post-mortem culture.",
+    career_url: "https://www.personio.com/about-personio/careers/"
+  },
+  {
+    title: "DevOps / Cloud Engineer — Azure (Home Office)",
+    company: "CHECK24",
+    location: "Munich / Fully Remote",
+    remote_type: "Fully Remote",
+    date_posted: new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
+    score: 74,
+    matched_skills: ["Azure","Kubernetes","Terraform","GitHub Actions","Docker","SonarQube"],
+    summary: "CHECK24 is expanding its Azure-first cloud platform. Looking for a DevOps engineer to manage AKS clusters, automate deployments via GitHub Actions, and enforce security policies with SonarQube and tfsec.",
+    career_url: "https://jobs.check24.de"
+  },
+  {
+    title: "Cloud Infrastructure Engineer — GCP/K8s",
+    company: "Delivery Hero",
+    location: "Berlin, Germany",
+    remote_type: "Hybrid / Remote",
+    date_posted: new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
+    score: 71,
+    matched_skills: ["Kubernetes","GCP","Terraform","Helm","Prometheus","Docker"],
+    summary: "Scale GCP infrastructure for food delivery operations across 70+ countries. Lead Kubernetes platform improvements, multi-region Terraform deployments, and cost optimization with autoscaling.",
+    career_url: "https://careers.deliveryhero.com"
+  },
+  {
+    title: "Junior-Mid DevOps Engineer — CI/CD Automation",
+    company: "Taxfix",
+    location: "Berlin, Germany / Remote",
+    remote_type: "Hybrid / Remote",
+    date_posted: new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
+    score: 62,
+    matched_skills: ["GitLab CI","Docker","Kubernetes","Ansible","Python"],
+    summary: "Taxfix needs a DevOps engineer to modernize its GitLab CI pipelines and introduce Ansible-based configuration management. Kubernetes experience preferred but not mandatory.",
+    career_url: "https://taxfix.de/careers"
+  },
+  {
+    title: "MLOps / DevOps Engineer — AI Platform",
+    company: "Aleph Alpha",
+    location: "Heidelberg, Germany",
+    remote_type: "Hybrid / Remote",
+    date_posted: new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
+    score: 58,
+    matched_skills: ["Kubernetes","Terraform","Python","Docker"],
+    summary: "Aleph Alpha is building sovereign European AI. Join as MLOps/DevOps Engineer to manage GPU Kubernetes clusters, ML pipeline infrastructure with Kubeflow, and cloud cost optimization.",
+    career_url: "https://www.aleph-alpha.com/careers"
+  }
+];
+
+// ── State ─────────────────────────────────────────────────────────────────
+let ALL_JOBS = [];
+let filtered = [];
+let activeFilter = 'all';
+let searchTerm = '';
+let sortBy = 'score';
+
+// ── Boot ──────────────────────────────────────────────────────────────────
+async function boot() {
+  try {
+    const res = await fetch('./jobs.json?t=' + Date.now());
+    if (!res.ok) throw new Error('no jobs.json');
+    const data = await res.json();
+    ALL_JOBS = data.jobs || data;
+    const updated = data.updated || new Date().toISOString();
+    document.getElementById('hdr-updated').textContent = new Date(updated).toLocaleDateString('en-GB',{day:'2-digit',month:'short'});
+    document.getElementById('last-updated').innerHTML =
+      `Last synced: <span>${new Date(updated).toLocaleString('en-GB',{dateStyle:'medium',timeStyle:'short'})}</span> — refresh or re-run the script to update`;
+  } catch {
+    ALL_JOBS = SAMPLE_JOBS;
+    document.getElementById('last-updated').innerHTML =
+      `<span style="color:var(--warn)">⚠ Showing sample data.</span> Place <code>jobs.json</code> next to <code>index.html</code> and push to GitHub Pages.`;
+    document.getElementById('hdr-updated').textContent = 'DEMO';
+  }
+  applyFilters();
+  setTimeout(() => document.getElementById('loading').classList.add('hidden'), 600);
+}
+
+// ── Filters & Sort ────────────────────────────────────────────────────────
+function applyFilters() {
+  let jobs = [...ALL_JOBS];
+
+  if (searchTerm) {
+    const q = searchTerm.toLowerCase();
+    jobs = jobs.filter(j =>
+      j.title.toLowerCase().includes(q) ||
+      j.company.toLowerCase().includes(q) ||
+      (j.matched_skills || []).some(s => s.toLowerCase().includes(q))
+    );
+  }
+
+  if (activeFilter === 'high')   jobs = jobs.filter(j => j.score >= 75);
+  if (activeFilter === 'fully')  jobs = jobs.filter(j => j.remote_type.includes('Fully'));
+  if (activeFilter === 'hybrid') jobs = jobs.filter(j => j.remote_type.includes('Hybrid'));
+
+  if (sortBy === 'score') jobs.sort((a,b) => b.score - a.score);
+  if (sortBy === 'date')  jobs.sort((a,b) => new Date(b.date_posted) - new Date(a.date_posted));
+  if (sortBy === 'company') jobs.sort((a,b) => a.company.localeCompare(b.company));
+
+  filtered = jobs;
+  updateStats();
+  renderGrid();
+}
+
+function updateStats() {
+  const all = ALL_JOBS;
+  document.getElementById('st-total').textContent = all.length;
+  document.getElementById('st-high').textContent  = all.filter(j => j.score >= 75).length;
+  document.getElementById('st-remote').textContent = all.filter(j => j.remote_type.includes('Fully')).length;
+  const avg = all.length ? Math.round(all.reduce((s,j) => s + j.score, 0) / all.length) : 0;
+  document.getElementById('st-avg').textContent = avg + '%';
+  document.getElementById('hdr-count').textContent = all.length + ' ROLES';
+}
+
+// ── Render ────────────────────────────────────────────────────────────────
+function scoreColor(s) {
+  if (s >= 75) return 'var(--accent2)';
+  if (s >= 60) return 'var(--warn)';
+  return 'var(--accent3)';
+}
+
+function remoteTag(type) {
+  if (type.includes('Fully')) return `<span class="tag tag-remote-full">◉ Fully Remote</span>`;
+  if (type.includes('Hybrid')) return `<span class="tag tag-remote-hybrid">◎ Hybrid</span>`;
+  return `<span class="tag tag-loc">${type}</span>`;
+}
+
+function scoreRingSVG(score, color) {
+  const r = 20, c = 26, circ = 2 * Math.PI * r;
+  const offset = circ - (score / 100) * circ;
+  return `
+    <svg width="52" height="52" viewBox="0 0 52 52">
+      <circle class="track" cx="${c}" cy="${c}" r="${r}"/>
+      <circle class="fill" cx="${c}" cy="${c}" r="${r}"
+        stroke="${color}"
+        stroke-dasharray="${circ}"
+        stroke-dashoffset="${offset}"/>
+    </svg>
+    <div class="score-text" style="color:${color}">${score}%</div>`;
+}
+
+function renderGrid() {
+  const grid = document.getElementById('jobs-grid');
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty"><h3>No matches found</h3><p>Try adjusting your search or filters.</p></div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map((job, i) => {
+    const color = scoreColor(job.score);
+    const skills = (job.matched_skills || []).slice(0, 6).map(s =>
+      `<span class="skill-pill">${s}</span>`).join('');
+    const delay = Math.min(i * 50, 400);
+    return `
+      <div class="job-card" style="animation-delay:${delay}ms" onclick="openModal(${ALL_JOBS.indexOf(job)})">
+        <div class="card-top">
+          <div class="card-title-wrap">
+            <div class="card-company">${job.company}</div>
+            <div class="card-title">${job.title}</div>
+          </div>
+          <div class="score-ring">${scoreRingSVG(job.score, color)}</div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="tag tag-loc">📍 ${job.location}</span>
+            ${remoteTag(job.remote_type)}
+            <span class="tag tag-date">🕐 ${job.date_posted}</span>
+          </div>
+          <p class="card-summary">${job.summary}</p>
+          <div class="skills-row">${skills}${job.matched_skills?.length > 6 ? `<span class="skill-pill" style="opacity:0.5">+${job.matched_skills.length-6}</span>` : ''}</div>
+        </div>
+        <div class="card-footer">
+          <span class="match-label">match score</span>
+          <a class="apply-btn" href="${job.career_url}" target="_blank" onclick="event.stopPropagation()">→ Apply</a>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── Modal ─────────────────────────────────────────────────────────────────
+function openModal(idx) {
+  const job = ALL_JOBS[idx];
+  if (!job) return;
+  const color = scoreColor(job.score);
+
+  document.getElementById('m-company').textContent = job.company;
+  document.getElementById('m-title').textContent   = job.title;
+  document.getElementById('m-summary').textContent = job.summary;
+
+  document.getElementById('m-meta').innerHTML = `
+    <span class="tag tag-loc">📍 ${job.location}</span>
+    ${remoteTag(job.remote_type)}
+    <span class="tag tag-date">🕐 ${job.date_posted}</span>
+    <span class="tag" style="color:${color};border-color:${color}30;background:${color}10">
+      ◉ ${job.score}% Match
+    </span>`;
+
+  document.getElementById('m-skills').innerHTML =
+    (job.matched_skills || []).map(s => `<span class="skill-pill">${s}</span>`).join('');
+
+  const strength = job.score >= 75 ? 'Strong fit' : job.score >= 60 ? 'Good fit' : 'Partial fit';
+  document.getElementById('m-analysis').textContent =
+    `${strength} — ${job.matched_skills?.length || 0} of your core skills matched in this posting. ` +
+    `Score based on Kubernetes (20%), CI/CD (18%), Cloud (17%), Terraform (15%), and other weighted categories.`;
+
+  document.getElementById('m-apply').href = job.career_url;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay'))
+    document.getElementById('modal-overlay').classList.remove('open');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.getElementById('modal-overlay').classList.remove('open');
+});
+
+// ── Event Listeners ───────────────────────────────────────────────────────
+document.getElementById('search').addEventListener('input', e => {
+  searchTerm = e.target.value.trim();
+  applyFilters();
+});
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    applyFilters();
+  });
+});
+
+document.getElementById('sort').addEventListener('change', e => {
+  sortBy = e.target.value;
+  applyFilters();
+});
+
+boot();
+</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+{
+  "updated": "2026-02-25T06:00:00Z",
+  "jobs": [
+    {
+      "title": "Senior DevOps Engineer (Remote)",
+      "company": "Zalando SE",
+      "location": "Berlin, Germany",
+      "remote_type": "Fully Remote",
+      "date_posted": "25 Feb 2026",
+      "score": 88,
+      "matched_skills": ["Kubernetes","Terraform","ArgoCD","Azure","GitHub Actions","Prometheus","Grafana","Docker","Helm"],
+      "summary": "Join Zalando platform team to own Kubernetes-based infrastructure at scale. Drive CI/CD modernization with ArgoCD and GitOps patterns. Collaborate with 80+ engineering teams across Europe.",
+      "career_url": "https://jobs.zalando.com/en/jobs"
+    },
+    {
+      "title": "Platform Engineer — Cloud Infrastructure",
+      "company": "N26 GmbH",
+      "location": "Berlin / Remote",
+      "remote_type": "Hybrid / Remote",
+      "date_posted": "25 Feb 2026",
+      "score": 82,
+      "matched_skills": ["Kubernetes","AWS","Terraform","GitHub Actions","Docker","Prometheus","Python"],
+      "summary": "N26 is hiring a Platform Engineer to lead EKS cluster operations and IaC standardization using Terraform modules. Security-first mindset required — integrate Trivy and SAST tooling into pipelines.",
+      "career_url": "https://n26.com/en-de/careers"
+    },
+    {
+      "title": "Site Reliability Engineer (SRE) — Kubernetes",
+      "company": "Personio",
+      "location": "Munich, Germany",
+      "remote_type": "Hybrid / Remote",
+      "date_posted": "25 Feb 2026",
+      "score": 79,
+      "matched_skills": ["Kubernetes","GitOps","ArgoCD","Grafana","Prometheus","Helm","Bash"],
+      "summary": "Own reliability and observability for Personio HR platform serving 10,000+ customers. Build runbooks, SLOs, and alerting with Prometheus/Grafana. Drive incident response and post-mortem culture.",
+      "career_url": "https://www.personio.com/about-personio/careers/"
+    },
+    {
+      "title": "DevOps / Cloud Engineer — Azure (Home Office)",
+      "company": "CHECK24",
+      "location": "Munich / Fully Remote",
+      "remote_type": "Fully Remote",
+      "date_posted": "25 Feb 2026",
+      "score": 74,
+      "matched_skills": ["Azure","Kubernetes","Terraform","GitHub Actions","Docker","SonarQube"],
+      "summary": "CHECK24 is expanding its Azure-first cloud platform. Looking for a DevOps engineer to manage AKS clusters, automate deployments via GitHub Actions, and enforce security policies with SonarQube and tfsec.",
+      "career_url": "https://jobs.check24.de"
+    },
+    {
+      "title": "Cloud Infrastructure Engineer — GCP/K8s",
+      "company": "Delivery Hero",
+      "location": "Berlin, Germany",
+      "remote_type": "Hybrid / Remote",
+      "date_posted": "25 Feb 2026",
+      "score": 71,
+      "matched_skills": ["Kubernetes","GCP","Terraform","Helm","Prometheus","Docker"],
+      "summary": "Scale GCP infrastructure for food delivery operations across 70+ countries. Lead Kubernetes platform improvements, multi-region Terraform deployments, and cost optimization with autoscaling.",
+      "career_url": "https://careers.deliveryhero.com"
+    },
+    {
+      "title": "Junior-Mid DevOps Engineer — CI/CD Automation",
+      "company": "Taxfix",
+      "location": "Berlin, Germany / Remote",
+      "remote_type": "Hybrid / Remote",
+      "date_posted": "25 Feb 2026",
+      "score": 62,
+      "matched_skills": ["GitLab CI","Docker","Kubernetes","Ansible","Python"],
+      "summary": "Taxfix needs a DevOps engineer to modernize its GitLab CI pipelines and introduce Ansible-based configuration management. Kubernetes experience preferred but not mandatory.",
+      "career_url": "https://taxfix.de/careers"
+    },
+    {
+      "title": "MLOps / DevOps Engineer — AI Platform",
+      "company": "Aleph Alpha",
+      "location": "Heidelberg, Germany",
+      "remote_type": "Hybrid / Remote",
+      "date_posted": "25 Feb 2026",
+      "score": 58,
+      "matched_skills": ["Kubernetes","Terraform","Python","Docker"],
+      "summary": "Aleph Alpha is building sovereign European AI. Join as MLOps/DevOps Engineer to manage GPU Kubernetes clusters, ML pipeline infrastructure with Kubeflow, and cloud cost optimization.",
+      "career_url": "https://www.aleph-alpha.com/careers"
+    }
+  ]
+}

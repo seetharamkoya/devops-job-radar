@@ -1,0 +1,49 @@
+name: Daily DevOps Job Scan + Deploy
+
+on:
+  schedule:
+    - cron: '0 6 * * *'      # 6 AM UTC = 7 AM CET / 8 AM CEST
+  workflow_dispatch:          # Manual trigger from GitHub UI
+
+permissions:
+  contents: write             # Needed to push jobs.json back to repo
+
+jobs:
+  scan-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run job tracker (writes docs/jobs.json)
+        env:
+          ADZUNA_APP_ID:  ${{ secrets.ADZUNA_APP_ID }}
+          ADZUNA_API_KEY: ${{ secrets.ADZUNA_API_KEY }}
+          SMTP_USER:      ${{ secrets.SMTP_USER }}
+          SMTP_PASS:      ${{ secrets.SMTP_PASS }}
+          TO_EMAIL:       ${{ secrets.TO_EMAIL }}
+        run: python job_tracker.py
+
+      - name: Commit updated jobs.json to repo
+        run: |
+          git config user.name  "Job Tracker Bot"
+          git config user.email "bot@devops-radar.local"
+          git add docs/jobs.json
+          git diff --staged --quiet || git commit -m "chore: update jobs.json [$(date -u '+%Y-%m-%d %H:%M UTC')]"
+          git push
+
+      - name: Upload Excel as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: devops-job-matches-${{ github.run_number }}
+          path: output/*.xlsx
+          retention-days: 14
