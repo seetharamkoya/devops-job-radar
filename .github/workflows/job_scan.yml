@@ -1,4 +1,4 @@
-name: Daily DevOps Job Scan + Deploy
+name: Daily DevOps Job Scan + Deploy (Multi-Source)
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:          # Manual trigger from GitHub UI
 
 permissions:
-  contents: write             # Needed to push jobs.json back to repo
+  contents: write
 
 jobs:
   scan-and-deploy:
@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run job tracker (writes docs/jobs.json)
+      - name: Run job tracker
         env:
           ADZUNA_APP_ID:  ${{ secrets.ADZUNA_APP_ID }}
           ADZUNA_API_KEY: ${{ secrets.ADZUNA_API_KEY }}
@@ -33,15 +33,15 @@ jobs:
           TO_EMAIL:       ${{ secrets.TO_EMAIL }}
         run: python job_tracker.py
 
-      - name: Commit updated jobs.json to repo
+      - name: Commit updated jobs.json
         run: |
-          git config user.name  "Job Tracker Bot"
+          git config user.name  "Job Radar Bot"
           git config user.email "bot@devops-radar.local"
           git add docs/jobs.json
           git diff --staged --quiet || git commit -m "chore: update jobs.json [$(date -u '+%Y-%m-%d %H:%M UTC')]"
           git push
 
-      - name: Upload Excel as workflow artifact
+      - name: Upload Excel artifact
         uses: actions/upload-artifact@v4
         with:
           name: devops-job-matches-${{ github.run_number }}

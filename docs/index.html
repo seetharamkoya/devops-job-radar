@@ -557,6 +557,22 @@
   }
   .last-updated span { color: var(--accent2); }
 
+  /* ── SOURCE BADGES ── */
+  .src-badge {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    padding: 0.18rem 0.5rem; border-radius: 4px;
+    font-family: var(--mono); font-size: 0.6rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    border: 1px solid; flex-shrink: 0;
+  }
+  .src-LinkedIn      { color: #0a66c2; border-color: #0a66c220; background: #0a66c210; }
+  .src-Indeed        { color: #2164f3; border-color: #2164f320; background: #2164f310; }
+  .src-Adzuna        { color: #ef233c; border-color: #ef233c20; background: #ef233c10; }
+  .src-Arbeitnow     { color: #ff6b35; border-color: #ff6b3520; background: #ff6b3510; }
+  .src-RemoteOK      { color: #00d4ff; border-color: #00d4ff20; background: #00d4ff10; }
+  .src-WorkingNomads { color: #00ff9d; border-color: #00ff9d20; background: #00ff9d10; }
+  .src-TheMuse       { color: #c77dff; border-color: #c77dff20; background: #c77dff10; }
+
   /* ── RESPONSIVE ── */
   @media (max-width: 600px) {
     .stats-bar { flex-wrap: wrap; }
@@ -614,6 +630,10 @@
   <button class="filter-btn green" data-filter="high">≥75% MATCH</button>
   <button class="filter-btn" data-filter="fully">FULLY REMOTE</button>
   <button class="filter-btn" data-filter="hybrid">HYBRID</button>
+  <button class="filter-btn" data-filter="linkedin" style="border-color:#0a66c230;color:#0a66c2">LinkedIn</button>
+  <button class="filter-btn" data-filter="indeed"   style="border-color:#2164f330;color:#2164f3">Indeed</button>
+  <button class="filter-btn" data-filter="arbeitnow" style="border-color:#ff6b3530;color:#ff6b35">Arbeitnow</button>
+  <button class="filter-btn" data-filter="remoteok" style="border-color:#00d4ff30;color:#00d4ff">RemoteOK</button>
   <select class="sort-select" id="sort">
     <option value="score">Sort: Best Match</option>
     <option value="date">Sort: Newest</option>
@@ -783,9 +803,13 @@ function applyFilters() {
     );
   }
 
-  if (activeFilter === 'high')   jobs = jobs.filter(j => j.score >= 75);
-  if (activeFilter === 'fully')  jobs = jobs.filter(j => j.remote_type.includes('Fully'));
-  if (activeFilter === 'hybrid') jobs = jobs.filter(j => j.remote_type.includes('Hybrid'));
+  if (activeFilter === 'high')       jobs = jobs.filter(j => j.score >= 75);
+  if (activeFilter === 'fully')      jobs = jobs.filter(j => j.remote_type.includes('Fully'));
+  if (activeFilter === 'hybrid')     jobs = jobs.filter(j => j.remote_type.includes('Hybrid'));
+  if (activeFilter === 'linkedin')   jobs = jobs.filter(j => (j.source||'').toLowerCase() === 'linkedin');
+  if (activeFilter === 'indeed')     jobs = jobs.filter(j => (j.source||'').toLowerCase() === 'indeed');
+  if (activeFilter === 'arbeitnow')  jobs = jobs.filter(j => (j.source||'').toLowerCase() === 'arbeitnow');
+  if (activeFilter === 'remoteok')   jobs = jobs.filter(j => (j.source||'').toLowerCase() === 'remoteok');
 
   if (sortBy === 'score') jobs.sort((a,b) => b.score - a.score);
   if (sortBy === 'date')  jobs.sort((a,b) => new Date(b.date_posted) - new Date(a.date_posted));
@@ -858,6 +882,7 @@ function renderGrid() {
             <span class="tag tag-loc">📍 ${job.location}</span>
             ${remoteTag(job.remote_type)}
             <span class="tag tag-date">🕐 ${job.date_posted}</span>
+            ${job.source ? `<span class="src-badge src-${job.source}">${job.source}</span>` : ''}
           </div>
           <p class="card-summary">${job.summary}</p>
           <div class="skills-row">${skills}${job.matched_skills?.length > 6 ? `<span class="skill-pill" style="opacity:0.5">+${job.matched_skills.length-6}</span>` : ''}</div>
